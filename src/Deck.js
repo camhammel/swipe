@@ -3,17 +3,20 @@ import { View, Text, Animated, PanResponder } from "react-native";
 
 const Deck = ({ data, renderCard }) => {
   const [panResponder, setPanResponder] = useState(null);
+  const [position, setPosition] = useState(null);
 
   useEffect(() => {
     const panResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderMove: (event, gesture) => {
-        console.log(gesture);
+        position.setValue({ x: gesture.dx, y: gesture.dy });
       },
       onPanResponderRelease: () => {},
     });
+    const position = new Animated.ValueXY();
 
     setPanResponder(panResponder);
+    setPosition(position);
   }, []);
 
   function renderCards() {
@@ -22,9 +25,12 @@ const Deck = ({ data, renderCard }) => {
     });
   }
   return (
-    <View {...(panResponder != null ? panResponder.panHandlers : null)}>
+    <Animated.View
+      {...(panResponder != null ? panResponder.panHandlers : null)}
+      style={position?.getLayout() ? position.getLayout() : null}
+    >
       {renderCards()}
-    </View>
+    </Animated.View>
   );
 };
 
