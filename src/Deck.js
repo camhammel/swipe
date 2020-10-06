@@ -19,19 +19,33 @@ const Deck = ({ data, renderCard }) => {
     setPosition(position);
   }, []);
 
+  function getCardStyle() {
+    const rotate = position.x.interpolate({
+      inputRange: [-500, 0, 500],
+      outputRange: ["-90deg", "0deg", "90deg"],
+    });
+    return {
+      ...position.getLayout(),
+      transform: [{ rotate }],
+    };
+  }
+
   function renderCards() {
-    return data.map((item) => {
-      return renderCard(item);
+    return data.map((item, index) => {
+      if (index == 0) {
+        return (
+          <Animated.View
+            key={item.id}
+            {...(panResponder != null ? panResponder.panHandlers : null)}
+            style={getCardStyle()}
+          >
+            {renderCard(item)}
+          </Animated.View>
+        );
+      } else return renderCard(item);
     });
   }
-  return (
-    <Animated.View
-      {...(panResponder != null ? panResponder.panHandlers : null)}
-      style={position?.getLayout() ? position.getLayout() : null}
-    >
-      {renderCards()}
-    </Animated.View>
-  );
+  return <View>{renderCards()}</View>;
 };
 
 export default Deck;

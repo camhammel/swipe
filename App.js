@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import { Card, Button } from "react-native-elements";
 import Deck from "./src/Deck";
 
@@ -52,18 +52,15 @@ const DATA = [
 export default function App() {
   function renderCard(item) {
     return (
-      <Card
-        title={item.text}
-        titleStyle={{ marginTop: 10 }}
-        image={{ uri: item.uri }}
-        key={item.id}
-        containerStyle={{ borderRadius: 15 }}
-      >
-        <Text style={{ marginBottom: 10 }}>I can customize</Text>
+      <Card key={item.id} containerStyle={{ borderRadius: 15 }}>
+        <Card.Title style={{ marginTop: 10 }}>{item.text}</Card.Title>
+        <Card.Divider />
+        <Card.Image source={{ uri: item.uri }} />
         <Button
           icon={{ name: "code", color: "#fff" }}
           backgroundColor="#03a9f4"
           title="View"
+          style={{ marginTop: 20, marginBottom: 5 }}
         />
       </Card>
     );
